@@ -1,0 +1,56 @@
+from itertools import combinations
+def find_pairs(arr, target):
+    pairs = []
+    hash_map = {}
+
+    for i in range(len(arr)):
+        complement = target - arr[i]
+
+        if complement in hash_map:
+            pairs.append([arr[i], complement])
+
+        hash_map[arr[i]] = i
+
+    return pairs
+
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+
+    mid = len(arr) // 2
+    left = arr[:mid]
+    right = arr[mid:]
+
+    return merge(merge_sort(left), merge_sort(right))
+
+def merge(left, right):
+    result = []
+
+    while left and right:
+        if left[0] <= right[0]:
+            result.append(left.pop(0))
+        else:
+            result.append(right.pop(0))
+
+    return result + left + right
+
+def double_target(arr, target):
+    combinations_four = []
+
+    for combo in combinations(arr, 4):
+        if sum(combo) == target:
+            combinations_four.append(list(combo))
+
+    return combinations_four
+
+arr = [1, 3, 2, 2, -4, -6, -2, 8]
+target = 4
+
+pairs = find_pairs(arr, target)
+print(f'First Combination For "{target}" : {pairs}')
+
+merged_array = merge_sort(arr)
+print(f'Merged Array: {merged_array}')
+
+double_target_pairs = double_target(merged_array, target*2)
+print(f'Second Combination For "{target*2}" : {double_target_pairs}')
